@@ -7,7 +7,7 @@ export class CreateReimbursementComponent extends React.Component<any, any> {
     this.state = {
       amount: "",
       description: "",
-      type: "",
+      type: 0,
       data: {},
       reimbursement: []
     };
@@ -33,6 +33,7 @@ export class CreateReimbursementComponent extends React.Component<any, any> {
   }
   updateType(e: any) {
     const value = e.target.value;
+    console.log(value);
     this.setState({
       ...this.state,
       type: value,
@@ -49,7 +50,6 @@ export class CreateReimbursementComponent extends React.Component<any, any> {
         authorization: localStorage.getItem("token")
       }
     }
-    console.log(this.state.data);
     Axios.post(url, this.state.data, config)
       .then(payload => {
         console.log(payload.data.reimbursementid);
@@ -78,29 +78,31 @@ export class CreateReimbursementComponent extends React.Component<any, any> {
   render() {
     return (
       <div>
-        <div>reimbursement ID: </div>
-        
-        <div>Amount: </div>
-        <input
-          type="text"
-          value={this.state.amount}
-          onChange={(e: any) => this.updateAmount(e)}
-        />
-        <div>Description: </div>
-        <input
-          type="text"
-          value={this.state.description}
-          onChange={(e: any) => this.updateDescription(e)}
-        />
-        <div>Type By Type ID: </div>
-        <input
-          type="text"
-          value={this.state.type}
-          onChange={(e: any) => this.updateType(e)}
-        />
+        <div className="row ml-5 mr-5 mb-3 mt-3">
+          <div className="col-2">Amount: </div>
+          <input
+            type="text"
+            value={this.state.amount}
+            onChange={(e: any) => this.updateAmount(e)}
+          />
+          <div className="col-2">Description: </div>
+          <input
+            type="text"
+            value={this.state.description}
+            onChange={(e: any) => this.updateDescription(e)}
+          />
+          <div className="col-2">Type: </div>
+          <select onChange={(e: any) => this.updateType(e)}>
+            <option value="0">Lodging</option>
+            <option value="1">Travel</option>
+            <option value="2">Food</option>
+            <option value="3">Other</option>
+          </select>
+        </div>
         <br /><br />
-
+        <div className="row align-items-center justify-content-center">
         <button onClick={() => this.createReimbursement()}>Save Reimbursement</button>
+        </div>
         <div className="outputBox">
           <table className="table">
             <thead>

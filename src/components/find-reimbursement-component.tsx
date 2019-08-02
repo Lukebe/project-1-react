@@ -6,23 +6,33 @@ export class FindReimbursement extends React.Component<any,any>{
         super(props);
         this.state = {
             inputValue: "",
-            choice: 1,
+            choice: '1',
             reimbursements: []
         };
     }
     updateChoice(e: any) {
         const value = e.target.value;
-        this.setState({
-            ...this.state,
-            choice: value
-        });
-        console.log(this.state.choice);
+        ((this.state.choice === "2") ?
+            this.setState({
+                ...this.state,
+                choice: value,
+                inputValue: "",
+                reimbursements: []
+            }):
+            this.setState({
+                ...this.state,
+                choice: value,
+                inputValue: 0,
+                reimbursements: []
+            }) ) 
+        
     }
     updateValue(e: any) {
         const value = e.target.value;
         this.setState({
             ...this.state,
-            inputValue: value
+            inputValue: value,
+            reimbursements: []
         });
         console.log(this.state.inputValue);
     }
@@ -58,6 +68,8 @@ export class FindReimbursement extends React.Component<any,any>{
             .catch(error => {
                 console.log(error);
                 console.log(url);
+                alert(`Please enter valid data and try again.
+                        Thank you!`);
             });
 
     }
@@ -112,17 +124,35 @@ export class FindReimbursement extends React.Component<any,any>{
 
     render() {
         return (
-            <div>
+            <div>{console.log("value is:" + this.state.inputValue + "  choice is:" + this.state.choice)}
+                <div className="row align-items-center justify-content-center ml-5 mr-5 mb-3 mt-3">
+                { this.state.choice === "1" &&
                 <input
+                    className="ml-2 mr-5"
                     type="text"
                     value={this.state.inputValue}
                     onChange={(e: any) => this.updateValue(e)}
                 />
-                <select onChange={(e: any) => this.updateChoice(e)}>
+                }
+                { this.state.choice === "2" &&
+                    <select onChange={(e: any) => this.updateValue(e)}
+                        className="ml-2 mr-5"
+                        value={this.state.choice == 2 && this.state.inputValue}>
+                        <option value="0">Pending</option>
+                        <option value="1">Approved</option>
+                        <option value="2">Denied</option>
+                    </select>
+                }
+                <select onChange={(e: any) => this.updateChoice(e)}
+                        className="ml-2 mr-5"
+                        value={this.state.choice}>
                     <option value="1">Find Reimbursement By User ID</option>
-                    <option value="2">Find Reimbursement By Status ID</option>
+                    <option value="2">Find Reimbursement By Status</option>
                 </select>
+                </div>
+                <div className="row align-items-center justify-content-center">
                 <button onClick={() => this.findUsers()}>Find Reimbursement(s)</button>
+                </div>
                 <div className="outputBox">
                     <table className="table">
                         <thead>

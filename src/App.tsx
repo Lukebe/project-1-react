@@ -15,7 +15,7 @@ import { UpdateReimbursementComponent } from "./components/update-reimbursement-
 const App: React.FC = () => {
   return (
     <HashRouter>
-      <div>
+      <div className="">
         <NavComponent />
         <Switch>
           <Route path="/home" component={HomeComponent} />

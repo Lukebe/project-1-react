@@ -11,8 +11,8 @@ export class UpdateUserComponent extends React.Component<any, any> {
             firstName: "",
             lastName: "",
             email: "",
-            role: "",
-            data: {},
+            role: "(0,user)",
+            data: { role: "(0,user)"},
             users: []
         };
     }
@@ -89,10 +89,22 @@ export class UpdateUserComponent extends React.Component<any, any> {
         if (value === ""){
             value = undefined;
         }
+        let roleTitle = "";
+        switch(value){
+            case "0":
+                roleTitle = "user";
+                break;
+            case "1":
+                roleTitle = "financial-manager";
+                break;
+            case "2":
+                roleTitle = "admin";
+                break;
+        }
         this.setState({
             ...this.state,
             role: value,
-            data: {...this.state.data, role: value}
+            data: {...this.state.data, role: `(${value},${roleTitle})`}
         });
     }
 
@@ -111,7 +123,9 @@ export class UpdateUserComponent extends React.Component<any, any> {
                 this.setState({
                     ...this.state,
                     users: (
-                            <tr key={payload.data.userid}><th scope="row">{payload.data.userId}</th>
+                            <tr key={payload.data.userid}>
+                                <th scope="row">{payload.data.userId}</th>
+                                <td>{payload.data.username}</td>
                                 <td>{payload.data.firstName}</td>
                                 <td>{payload.data.lastName}</td>
                                 <td>{payload.data.email}</td>
@@ -131,56 +145,66 @@ export class UpdateUserComponent extends React.Component<any, any> {
     render() {
         return (
             <div>
-                <div>User ID: </div>
-                <input
-                    type="text"
-                    value={this.state.userid}
-                    onChange={(e: any) => this.updateId(e)}
-                /><br />
-                <div>Username: </div>
-                <input
-                    type="text"
-                    value={this.state.username}
-                    onChange={(e: any) => this.updateUsername(e)}
-                />
-                <div>Password: </div>
-                <input
-                    type="text"
-                    value={this.state.password}
-                    onChange={(e: any) => this.updatePassword(e)}
-                />
-                <div>First Name: </div>
-                <input
-                    type="text"
-                    value={this.state.firstname}
-                    onChange={(e: any) => this.updateFirstName(e)}
-                />
-                <div>Last Name: </div>
-                <input
-                    type="text"
-                    value={this.state.lastname}
-                    onChange={(e: any) => this.updateLastName(e)}
-                />
-                <div>Email: </div>
-                <input
-                    type="text"
-                    value={this.state.email}
-                    onChange={(e: any) => this.updateEmail(e)}
-                />
-                <div>Role By Role ID: </div>
-                <input
-                    type="text"
-                    value={this.state.role}
-                    onChange={(e: any) => this.updateRole(e)}
-                />
-                <br /><br />
-
+                <div className="row ml-5 mr-5 mb-3 mt-3">
+                    <div className="col-2">User ID: </div>
+                    <input
+                        type="text"
+                        value={this.state.userid}
+                        onChange={(e: any) => this.updateId(e)}
+                        required
+                    />
+                    <div className="col-2">Username: </div>
+                    <input
+                        type="text"
+                        value={this.state.username}
+                        onChange={(e: any) => this.updateUsername(e)}
+                    />
+                    <div className="col-2">Password: </div>
+                    <input
+                        type="text"
+                        value={this.state.password}
+                        onChange={(e: any) => this.updatePassword(e)}
+                    />
+                </div>
+                <div className="row ml-5 mr-5 mb-3 mt-3">
+                    <div className="col-2">First Name: </div>
+                    <input
+                        type="text"
+                        value={this.state.firstname}
+                        onChange={(e: any) => this.updateFirstName(e)}
+                    />
+                    <div className="col-2">Last Name: </div>
+                    <input
+                        type="text"
+                        value={this.state.lastname}
+                        onChange={(e: any) => this.updateLastName(e)}
+                    />
+                    <div className="col-2">Email: </div>
+                    <input
+                        type="email"
+                        value={this.state.email}
+                        onChange={(e: any) => this.updateEmail(e)}
+                    />
+                </div>
+                <div className="row ml-5 mr-5 mb-3 mt-3">
+                    <div className="col-2">Role: </div>
+                    <select onChange={(e: any) => this.updateRole(e)}>
+                        <option value="0">User</option>
+                        <option value="1">Financial-Manager</option>
+                        <option value="2">Admin</option>
+                    </select>
+                </div>
+                <br />
+                <div className="row align-items-center justify-content-center">
                 <button onClick={() => this.updateUserInDatabase()}>Update User</button>
+                </div>
+                <br />
                 <div className="outputBox">
                     <table className="table">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Username</th>
                                 <th scope="col">First Name</th>
                                 <th scope="col">Last Name</th>
                                 <th scope="col">Email</th>
@@ -190,7 +214,6 @@ export class UpdateUserComponent extends React.Component<any, any> {
                         <tbody>
                             {this.state.users}
                         </tbody>
-
                     </table>
                 </div>
             </div>

@@ -6,8 +6,8 @@ export class LoginComponent extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      username: "bell",
-      password: "pass"
+      username: "",
+      password: ""
     };
   }
 
@@ -45,6 +45,8 @@ export class LoginComponent extends React.Component<any, any> {
       .then(payload => {
         localStorage.setItem("token", payload.data.token);
         console.log(payload.data);
+        this.props.history.push('/home');
+        window.location.reload();
       })
       .catch(error => {
         console.log("This is an error" + error);
@@ -53,24 +55,32 @@ export class LoginComponent extends React.Component<any, any> {
 
   render() {
     return (
-      <div>
-        <div>Username: </div>
-        <input
-          type="text"
-          value={this.state.username}
-          onChange={(e: any) => this.updateUsername(e)}
-        />
-        <br />
-        <br />
-        <div>Password: </div>
-        <input
-          type="text"
-          value={this.state.password}
-          onChange={(e: any) => this.updatePassword(e)}
-        />
-        <br />
-        <br />
-        <button onClick={() => this.login()}>Login</button>
+      <div >
+        <div className="row">
+          <div className="col-5 display-inline" />
+            <div className="col-4 display-inline my-5">
+              <div >
+              <div className="mt-5">Username: </div>
+              <input
+                className="my-2"
+                type="text"
+                value={this.state.username}
+                onChange={(e: any) => this.updateUsername(e)}
+              />
+              </div>
+              <div >
+              <div >Password: </div>
+              <input
+                className="my-2 mb-3"
+                type="password"
+                value={this.state.password}
+                onChange={(e: any) => this.updatePassword(e)}
+              />
+              </div>
+              <button onClick={() => this.login()}>Login</button>
+            </div>
+          </div>
+
       </div>
     );
   }

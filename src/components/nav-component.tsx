@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { LogoutComponent } from "../components/logout-component";
 
 const NavComponent: React.FC = () => {
   return (
     <div>
-      <nav className="navbar navbar-toggleable-md navbar-expand-lg navbar-dark bg-primary display-front nav-pad">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <div className="navbar-header c-pointer shift-left">
           <Link to="/home" className="unset-anchor">
             <img className="img-adjust-position rev-logo" alt="revature" />
@@ -21,16 +22,14 @@ const NavComponent: React.FC = () => {
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse" id="navbarsExample04">
-          <ul className="navbar-nav ml-auto margin-nav">
+        {(localStorage.getItem("token"))?
+
+
+        (<div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item active">
               <Link to="/home" className="unset-anchor nav-link">
                 Home
-              </Link>
-            </li>
-            <li className="nav-item active">
-              <Link to="/login" className="unset-anchor nav-link">
-                Login
               </Link>
             </li>
             <li className="nav-item active">
@@ -59,7 +58,28 @@ const NavComponent: React.FC = () => {
               </Link>
             </li>
           </ul>
+          
+          <div className="form-inline my-2 my-lg-0">
+          <Link to="/home">
+          <LogoutComponent />
+          </Link>
+          </div>
+        </div>):
+
+        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li className="nav-item active">
+              <Link to="/home" className="unset-anchor nav-link">
+                Home
+              </Link>
+            </li>
+          </ul>
+            <div className="form-inline my-2 my-lg-0">
+              <Link to="/login" className="btn btn-outline-primary text-primary rounded-pill bg-light">Login</Link>
+            </div>
         </div>
+        }
+
       </nav>
     </div>
   );
